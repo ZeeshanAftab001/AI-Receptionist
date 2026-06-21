@@ -1,16 +1,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import agent_router
+from routers import agent_router,voice_router
+from core import settings
 
 app=FastAPI(title="AI Receptionist")
 
 app.add_middleware(CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
-    allow_credentials=True,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_credentials=settings.ALLOWED_CREDENTIALS,
     allow_methods=["*"],
     allow_headers=["*"])
 
 app.include_router(agent_router)
+app.include_router(voice_router)
 
 
 @app.get("/")
